@@ -19,6 +19,10 @@ public class DateFormatter
         StringBuilder sb = new StringBuilder();
 
         string [] dateParts;
+
+        int FirstDate = 0;
+        int SecondDate = 0;
+        int ThirdDate = 0;
     
         if (date.Contains("/"))
         {
@@ -29,31 +33,41 @@ public class DateFormatter
             dateParts = date.Split(" ");
         }
 
+        bool isDate = int.TryParse(dateParts[0], out FirstDate) && int.TryParse(dateParts[1], out SecondDate) && int.TryParse(dateParts[2], out ThirdDate);
+
         if (string.IsNullOrEmpty(date))
         {
             throw new ArgumentException("La fecha no puede ser nula o vacía.");
         }
-
         if (dateParts.Length != 3)
         {
-            return "Date is not in the correct format";
+            throw new ArgumentException("La fecha no tiene el formato correcto.");
         }
+        if (!isDate)
+        {
+            throw new ArgumentException("La fecha no tiene el formato correcto.");
+        }
+        
 
-        if (dateParts[0].Length == 4)
+        if (dateParts[0].Length == 4 && SecondDate <= 12 && ThirdDate <= 31)
         {
             sb.Append(dateParts[0]);
-            sb.Append('-');
+            sb.Append("-");
             sb.Append(dateParts[1]);
-            sb.Append('-');
+            sb.Append("-");
             sb.Append(dateParts[2]);
+        }
+        else if (dateParts[2].Length == 4 && SecondDate <= 12 && FirstDate <= 31)
+        {
+            sb.Append(dateParts[2]);
+            sb.Append("-");
+            sb.Append(dateParts[1]);
+            sb.Append("-");
+            sb.Append(dateParts[0]);
         }
         else
         {
-            sb.Append(dateParts[2]);
-            sb.Append('-');
-            sb.Append(dateParts[1]);
-            sb.Append('-');
-            sb.Append(dateParts[0]);
+            throw new ArgumentException("La fecha no tiene el formato correcto.");
         }
         return sb.ToString();
     }

@@ -20,7 +20,7 @@ public class DataFormatterTests
     {
         try
         {
-        string expected = "2020-01-01";
+        string expected = "2020-10-01";
         string actual = DateFormatter.ChangeFormat("");
         Assert.That(actual, Is.EqualTo(expected));
         }
